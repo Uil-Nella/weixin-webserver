@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	<servlet>
+		<servlet-name>YonyouServlet</servlet-name>
+		<servlet-class>
+			com.yonyou.weixin.core.servlet.YonyouServlet
+		</servlet-class>
+	</servlet>
+
+	<!-- url-pattern中配置的/YonyouServlet用于指定该Servlet的访问路径 -->
+	<servlet-mapping>
+		<servlet-name>YonyouServlet</servlet-name>
+		<url-pattern>/YonyouServlet</url-pattern>
+	</servlet-mapping>
+
+</web-app>
