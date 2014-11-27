@@ -1,14 +1,15 @@
 package com.yonyou.weixin.core.processor;
 
+import java.io.InputStream;
 import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
-
+import org.apache.commons.io.IOUtils;
 
 import com.yonyou.weixin.core.model.TextMessage;
+import com.yonyou.weixin.core.qq.WXBizMsgCrypt;
 import com.yonyou.weixin.core.service.TextMsgService;
 import com.yonyou.weixin.core.util.IMessageType;
 import com.yonyou.weixin.core.util.MessageUtil;
@@ -18,27 +19,41 @@ public class YonyouProcessor {
 		Map<String, String> requestMap = null;
 		String resp = "响应失败！";
 		try {
-			// xml请求解析
-			requestMap = MessageUtil.parseXml(request);
+//			 xml请求解析
+			InputStream inputStream = request.getInputStream();
+			String postData=IOUtils.toString(inputStream, "UTF-8");
+			// 微信加密签名
+			String sVerifyMsgSig = request.getParameter("msg_signature");
+			// 时间戳
+			String sVerifyTimeStamp = request.getParameter("timestamp");
+			// 随机数
+			String sVerifyNonce = request.getParameter("nonce");
+			
+			String x = WXBizMsgCrypt.getWX().DecryptMsg(sVerifyMsgSig, sVerifyTimeStamp, sVerifyNonce, postData);
+			System.out.println(x);
+			requestMap = MessageUtil.parseXml(x);
 			// 发送方帐号（open_id）
 			String fromUserName = requestMap.get("FromUserName");
 			// 公众帐号
 			String toUserName = requestMap.get("ToUserName");
 			// 消息类型
 			String msgType = requestMap.get("MsgType");
-			
+			System.out.println(request);
+			System.out.println("FromUserName:"+fromUserName+",toUserName:"+toUserName+",msgType:"+msgType);
+			System.out.println("comtent:"+requestMap.get("Content"));
+			System.out.println("event:"+requestMap.get("Event")+"，eventkey："+requestMap.get("EventKey"));
 			
 			// 回复文本消息
-						TextMessage textMessage = new TextMessage();
-						textMessage.setToUserName(fromUserName);
-						textMessage.setFromUserName(toUserName);
-						textMessage.setCreateTime(new Date().getTime());
-						textMessage.setMsgType(IMessageType.RESP_MESSAGE_TYPE_TEXT);
-						textMessage.setFuncFlag(0);
+			TextMessage textMessage = new TextMessage();
+			textMessage.setToUserName(fromUserName);
+			textMessage.setFromUserName(toUserName);
+			textMessage.setCreateTime(new Date().getTime());
+			textMessage.setMsgType(IMessageType.RESP_MESSAGE_TYPE_TEXT);
+			textMessage.setFuncFlag(0);
 			// 文本消息
 			if (IMessageType.REQ_MESSAGE_TYPE_TEXT.equalsIgnoreCase(msgType)) {
 				String content = requestMap.get("Content").trim();
-				resp = new TextMsgService().excute(content);
+				textMessage.setContent(new TextMsgService().excute(content));
 			}
 			// 事件推送
 			else if (msgType.equals(IMessageType.REQ_MESSAGE_TYPE_EVENT)) {
@@ -46,7 +61,7 @@ public class YonyouProcessor {
 				String eventType = requestMap.get("Event");
 				// 订阅
 				if (eventType.equals(IMessageType.EVENT_TYPE_SUBSCRIBE)) {
-					resp = "欢迎使用UAP消息中心";
+					textMessage.setContent( "欢迎使用UAP消息中心");
 				}
 				// 取消订阅
 				else if (eventType.equals(IMessageType.EVENT_TYPE_UNSUBSCRIBE)) {
@@ -56,14 +71,15 @@ public class YonyouProcessor {
 				else if (eventType.equals(IMessageType.EVENT_TYPE_CLICK)) {
 					// 事件KEY值，与创建自定义菜单时指定的KEY值对应
 					String eventKey = requestMap.get("EventKey");
-					resp = new TextMsgService().excute(eventKey);
+					textMessage.setContent( new TextMsgService().excute(eventKey));
 					if (eventKey.equals("12")) {
 					}
-					if (IMessageType.EVENT_TYPE_CLICK.equalsIgnoreCase(msgType)) {
-						resp = new TextMsgService().excute(toUserName);
+					if (IMessageType.EVENT_TYPE_CLICK.equalsIgnoreCase(eventKey)) {
+						textMessage.setContent( new TextMsgService().excute(eventKey));
 					}
 				}
 			}
+			resp = MessageUtil.textMessageToXml(textMessage);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

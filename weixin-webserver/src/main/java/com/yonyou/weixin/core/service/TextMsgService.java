@@ -4,7 +4,7 @@ public class TextMsgService implements IService<String, String> {
 
 	@Override
 	public String excute(String t) {
-		return "Are you see English？";
+		return "Are you see English？----"+t;
 	}
 
 

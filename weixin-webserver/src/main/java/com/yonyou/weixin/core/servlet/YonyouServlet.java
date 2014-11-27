@@ -3,6 +3,7 @@ package com.yonyou.weixin.core.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.yonyou.weixin.core.processor.YonyouProcessor;
 import com.yonyou.weixin.core.qq.AesException;
 import com.yonyou.weixin.core.qq.WXBizMsgCrypt;
+import com.yonyou.weixin.core.util.MessageUtil;
 import com.yonyou.weixin.core.verify.TokenVerify;
 
 
@@ -42,6 +44,12 @@ public class YonyouServlet extends HttpServlet {
         //-----------------------------------------------------------------  
         // 响应消息  
         PrintWriter out = response.getWriter();  
+        try {
+			respMessage=WXBizMsgCrypt.getWX().EncryptMsg(respMessage, request.getParameter("timestamp"), request.getParameter("nonce"));
+		} catch (AesException e) {
+			e.printStackTrace();
+		}
+        
         out.print(respMessage);  
         out.close();  
 	}

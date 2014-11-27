@@ -10,9 +10,9 @@ import com.yonyou.weixin.core.qq.AesException;
 import com.yonyou.weixin.core.qq.WXBizMsgCrypt;
 
 public class TokenVerify {
-	private static String sToken = "xQtfQTeNBkcZI2uOjoftgyOROR1x";// 这个Token是随机生成，但是必须跟企业号上的相同
-	private static String sCorpID = "wx569905b8c1a2a573";// 这里是你企业号的CorpID
-	private static String sEncodingAESKey = "rjhGuYgsW7hc2AGI6wQoc8umXEL9zbrd7B6bVCXDes5";// 这个EncodingAESKey是随机生成，但是必须跟企业号上的相同
+	public static String sToken = "xQtfQTeNBkcZI2uOjoftgyOROR1x";// 这个Token是随机生成，但是必须跟企业号上的相同
+	public static String sCorpID = "wx569905b8c1a2a573";// 这里是你企业号的CorpID
+	public static String sEncodingAESKey = "rjhGuYgsW7hc2AGI6wQoc8umXEL9zbrd7B6bVCXDes5";// 这个EncodingAESKey是随机生成，但是必须跟企业号上的相同
 
 	public static void verify(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
