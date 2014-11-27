@@ -18,10 +18,18 @@ import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.PrettyPrintWriter;
 import com.thoughtworks.xstream.io.xml.XppDriver;
+import com.yonyou.weixin.core.model.Article;
+import com.yonyou.weixin.core.model.MusicMessage;
+import com.yonyou.weixin.core.model.NewsMessage;
 import com.yonyou.weixin.core.model.TextMessage;
 
 /**
  * 消息工具类
+ * <p/>
+ * <p> @author 刘新宇
+ *
+ * <p> @date 2014年11月27日 下午8:06:34
+ * <p> @version 0.0.1
  */
 public class MessageUtil {
 
@@ -58,15 +66,21 @@ public class MessageUtil {
 
 		return map;
 	}
-	
-	
-	public static Map<String, String> parseXml(String msg)
-			throws Exception {
+
+	/**
+	 * 将字符串xml转换为map
+	 * 
+	 * @param msg
+	 * @return
+	 * @throws Exception
+	 */
+	public static Map<String, String> parseXml(String msg) throws Exception {
 		// 将解析结果存储在HashMap中
 		Map<String, String> map = new HashMap<String, String>();
 
 		// 从request中取得输入流
-		InputStream inputStream = new ByteArrayInputStream(msg.getBytes("UTF-8"));
+		InputStream inputStream = new ByteArrayInputStream(
+				msg.getBytes("UTF-8"));
 		// 读取输入流
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(inputStream);
@@ -93,10 +107,10 @@ public class MessageUtil {
 	 *            文本消息对象
 	 * @return xml
 	 */
-	 public static String textMessageToXml(TextMessage textMessage) {
-	 xstream.alias("xml", textMessage.getClass());
-	 return xstream.toXML(textMessage);
-	 }
+	public static String textMessageToXml(TextMessage textMessage) {
+		xstream.alias("xml", textMessage.getClass());
+		return xstream.toXML(textMessage);
+	}
 
 	/**
 	 * 音乐消息对象转换成xml
@@ -105,10 +119,10 @@ public class MessageUtil {
 	 *            音乐消息对象
 	 * @return xml
 	 */
-	// public static String musicMessageToXml(MusicMessage musicMessage) {
-	// xstream.alias("xml", musicMessage.getClass());
-	// return xstream.toXML(musicMessage);
-	// }
+	public static String musicMessageToXml(MusicMessage musicMessage) {
+		xstream.alias("xml", musicMessage.getClass());
+		return xstream.toXML(musicMessage);
+	}
 
 	/**
 	 * 图文消息对象转换成xml
@@ -117,16 +131,15 @@ public class MessageUtil {
 	 *            图文消息对象
 	 * @return xml
 	 */
-	// public static String newsMessageToXml(NewsMessage newsMessage) {
-	// xstream.alias("xml", newsMessage.getClass());
-	// xstream.alias("item", new Article().getClass());
-	// return xstream.toXML(newsMessage);
-	// }
+	public static String newsMessageToXml(NewsMessage newsMessage) {
+		xstream.alias("xml", newsMessage.getClass());
+		xstream.alias("item", new Article().getClass());
+		return xstream.toXML(newsMessage);
+	}
 
 	/**
 	 * 扩展xstream，使其支持CDATA块
 	 * 
-	 * @date 2013-05-19
 	 */
 	private static XStream xstream = new XStream(new XppDriver() {
 		public HierarchicalStreamWriter createWriter(Writer out) {

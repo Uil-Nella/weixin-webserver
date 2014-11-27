@@ -6,14 +6,35 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.yonyou.weixin.core.qq.AesException;
-import com.yonyou.weixin.core.qq.WXBizMsgCrypt;
-
+import com.yonyou.weixin.core.tencent.AesException;
+import com.yonyou.weixin.core.tencent.WXBizMsgCrypt;
+/**
+ * token校验工具类
+ * <p/>
+ * <p> @author 刘新宇
+ *
+ * <p> @date 2014年11月27日 下午8:00:15
+ * <p> @version 0.0.1
+ */
 public class TokenVerify {
+	/**
+	 * token
+	 */
 	public static String sToken = "xQtfQTeNBkcZI2uOjoftgyOROR1x";// 这个Token是随机生成，但是必须跟企业号上的相同
+	/**
+	 * 企业号ID
+	 */
 	public static String sCorpID = "wx569905b8c1a2a573";// 这里是你企业号的CorpID
+	/**
+	 * 加密所用AES密钥
+	 */
 	public static String sEncodingAESKey = "rjhGuYgsW7hc2AGI6wQoc8umXEL9zbrd7B6bVCXDes5";// 这个EncodingAESKey是随机生成，但是必须跟企业号上的相同
-
+	/**
+	 * 校验方法
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	public static void verify(HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		PrintWriter out = response.getWriter();

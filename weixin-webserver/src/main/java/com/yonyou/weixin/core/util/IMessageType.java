@@ -1,5 +1,12 @@
 package com.yonyou.weixin.core.util;
-
+/**
+ * 消息类型
+ * <p/>
+ * <p> @author 刘新宇
+ *
+ * <p> @date 2014年11月27日 下午8:01:57
+ * <p> @version 0.0.1
+ */
 public class IMessageType {
 	/**
 	 * 返回消息类型：文本
