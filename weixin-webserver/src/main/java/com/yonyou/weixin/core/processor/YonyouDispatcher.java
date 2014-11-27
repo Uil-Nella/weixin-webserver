@@ -25,15 +25,38 @@ public class YonyouDispatcher {
 			requestMap = MessageUtil.parseXml(data);
 			String msgType = requestMap.get("MsgType");
 			TextMessage textMessage = getResponseMsg(requestMap, msgType);
-			// 文本消息
-			if (IMessageType.REQ_MESSAGE_TYPE_TEXT.equalsIgnoreCase(msgType)) {
-				String content = requestMap.get("Content").trim();
-				textMessage.setContent(new TextMsgService().excute(content));
-			}
+			String respContent="";
+			// 文本消息  
+            if (msgType.equals(IMessageType.REQ_MESSAGE_TYPE_TEXT)) {  
+                String content = requestMap.get("Content");   
+//                textMessage.setContent(new TextMsgService().excute(content));
+                respContent = "uap提示：您发送的是文本消息！内容是："+content;  
+            }  
+            // 图片消息  
+            else if (msgType.equals(IMessageType.REQ_MESSAGE_TYPE_IMAGE)) {  
+                respContent = "uap提示：您发送的是图片消息！";  
+            }  
+            // 地理位置消息  
+            else if (msgType.equals(IMessageType.REQ_MESSAGE_TYPE_LOCATION)) {  
+                respContent = "uap提示：您发送的是地理位置消息！";   
+            }  
+            // 链接消息  
+            else if (msgType.equals(IMessageType.REQ_MESSAGE_TYPE_LINK)) {  
+                respContent = "uap提示：您发送的是链接消息！";  
+            }  
+            // 音频消息  
+            else if (msgType.equals(IMessageType.REQ_MESSAGE_TYPE_VOICE)) {  
+                respContent = "uap提示：您发送的是音频消息！";  
+            }  
+            textMessage.setContent(respContent);
+            
 			// 事件推送
-			else if (msgType.equals(IMessageType.REQ_MESSAGE_TYPE_EVENT)) {
+			if (msgType.equals(IMessageType.REQ_MESSAGE_TYPE_EVENT)) {
 				// 事件类型
 				String eventType = requestMap.get("Event");
+				String eventKey = requestMap.get("EventKey");
+				
+				textMessage.setContent("您请求的事件msgType："+msgType+",eventType值是："+eventType+",eventKey是："+eventKey);
 				// 订阅
 				if (eventType.equals(IMessageType.EVENT_TYPE_SUBSCRIBE)) {
 					textMessage.setContent( "欢迎使用UAP消息中心");
@@ -45,7 +68,7 @@ public class YonyouDispatcher {
 				// 自定义菜单点击事件
 				else if (eventType.equals(IMessageType.EVENT_TYPE_CLICK)) {
 					// 事件KEY值，与创建自定义菜单时指定的KEY值对应
-					String eventKey = requestMap.get("EventKey");
+//					String eventKey = requestMap.get("EventKey");
 					textMessage.setContent( new TextMsgService().excute(eventKey));
 					if (eventKey.equals("12")) {
 					}
