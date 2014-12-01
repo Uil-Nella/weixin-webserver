@@ -56,7 +56,7 @@ public class YonyouDispatcher {
 				String eventType = requestMap.get("Event");
 				String eventKey = requestMap.get("EventKey");
 				
-				textMessage.setContent("您请求的事件msgType："+msgType+",eventType值是："+eventType+",eventKey是："+eventKey);
+				textMessage.setContent("您请求的事件msgType是："+msgType+",eventType值是："+eventType+",eventKey是："+eventKey);
 				// 订阅
 				if (eventType.equals(IMessageType.EVENT_TYPE_SUBSCRIBE)) {
 					textMessage.setContent( "欢迎使用UAP消息中心");
@@ -83,7 +83,12 @@ public class YonyouDispatcher {
 		}
 		return resp;
 	}
-
+	/**
+	 * 预处理拼装message
+	 * @param requestMap
+	 * @param msgType
+	 * @return
+	 */
 	private static TextMessage getResponseMsg(Map<String, String> requestMap,
 			String msgType) {
 		// 发送方帐号（open_id）

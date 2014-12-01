@@ -17,6 +17,9 @@
 	<context:component-scan base-package="com.yonyou">
 	</context:component-scan>
 
+	<!-- 静态资源映射 -->
+    <mvc:resources mapping="/static/**" location="/static/"/>
+
 	<!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
 	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -24,6 +27,15 @@
 		<property name="suffix" value=".jsp"></property>
 	</bean>
 
-
+	<!-- OAuth2拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<!-- 对所有的请求拦截使用/** ,对某个模块下的请求拦截使用：/myPath/* -->
+			<mvc:mapping path="/**" />
+			<ref bean="oauth2Interceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<bean id="oauth2Interceptor" class="com.yonyou.weixin.core.oauth2.inteceptor.OAuth2Interceptor">
+	</bean>
 
 </beans>
