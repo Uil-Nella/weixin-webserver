@@ -1,7 +1,12 @@
 package com.yonyou.weixin.core.model;
 
 /**
- * 消息基类（公众帐号 -> 普通用户）
+ * 消息基类
+ * <p/>
+ * <p> @author 刘新宇
+ *
+ * <p> @date 2014年12月1日 下午6:27:57
+ * <p> @version 0.0.1
  */
 public class BaseMessage {
 	// 接收方帐号（收到的OpenID）

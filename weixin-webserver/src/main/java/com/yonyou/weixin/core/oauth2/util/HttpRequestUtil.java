@@ -19,7 +19,15 @@ import javax.net.ssl.TrustManager;
 import net.sf.json.JSONObject;
 
 import com.yonyou.weixin.core.oauth2.enums.EnumMethod;
-
+import com.yonyou.weixin.core.oauth2.inteceptor.APPConstants;
+/**
+ * Http 请求工具类
+ * <p/>
+ * <p> @author 刘新宇
+ *
+ * <p> @date 2014年12月1日 下午6:46:10
+ * <p> @version 0.0.1
+ */
 public class HttpRequestUtil {
 	
 	/**
@@ -61,13 +69,13 @@ public class HttpRequestUtil {
 			if (null != outputStr) {
 				OutputStream outputStream = httpUrlConn.getOutputStream();
 				// 注意编码格式，防止中文乱码
-				outputStream.write(outputStr.getBytes("UTF-8"));
+				outputStream.write(outputStr.getBytes(APPConstants.APP_ENCODING));
 				outputStream.close();
 			}
 
 			// 将返回的输入流转换成字符串
 			InputStream inputStream = httpUrlConn.getInputStream();
-			InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
+			InputStreamReader inputStreamReader = new InputStreamReader(inputStream, APPConstants.APP_ENCODING);
 			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
 			String str = null;
@@ -81,14 +89,12 @@ public class HttpRequestUtil {
 			inputStream = null;
 			httpUrlConn.disconnect();
 			jsonObject = JSONObject.fromObject(buffer.toString());
-			//System.out.println("jsonObject="+jsonObject);
 		} catch (ConnectException ce) {
 			ce.printStackTrace();
 			System.out.println("网络链接失败！");
 		}catch (UnknownHostException uhe) {
 			uhe.printStackTrace();
 			System.out.println("微信API无法访问....！");
-			//httpRequest(requestUrl, requestMethod, outputStr);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

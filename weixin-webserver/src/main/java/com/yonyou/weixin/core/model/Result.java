@@ -1,4 +1,4 @@
-package com.yonyou.weixin.core.oauth2.util;
+package com.yonyou.weixin.core.model;
 
 public class Result<T> {
 	private T obj;

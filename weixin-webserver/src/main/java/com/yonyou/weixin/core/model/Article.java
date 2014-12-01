@@ -2,6 +2,11 @@ package com.yonyou.weixin.core.model;
 
 /**
  * 图文model
+ * <p/>
+ * <p> @author 刘新宇
+ *
+ * <p> @date 2014年12月1日 下午6:27:46
+ * <p> @version 0.0.1
  */
 public class Article {
 	// 图文消息名称

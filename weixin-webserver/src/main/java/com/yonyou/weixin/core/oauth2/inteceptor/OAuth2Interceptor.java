@@ -54,7 +54,7 @@ public class OAuth2Interceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		System.out.println("**执行顺序: 1、preHandle**");
-		String url = request.getRequestURL().toString();
+//		String url = request.getRequestURL().toString();
 
 		HttpSession session = request.getSession();
 		// 先判断是否有注解

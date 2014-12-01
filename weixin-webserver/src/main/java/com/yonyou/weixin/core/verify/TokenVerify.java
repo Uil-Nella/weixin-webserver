@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.yonyou.weixin.core.oauth2.inteceptor.APPConstants;
 import com.yonyou.weixin.core.tencent.AesException;
 import com.yonyou.weixin.core.tencent.WXBizMsgCrypt;
 /**
@@ -17,18 +18,6 @@ import com.yonyou.weixin.core.tencent.WXBizMsgCrypt;
  * <p> @version 0.0.1
  */
 public class TokenVerify {
-	/**
-	 * token
-	 */
-	public static String sToken = "xQtfQTeNBkcZI2uOjoftgyOROR1x";// 这个Token是随机生成，但是必须跟企业号上的相同
-	/**
-	 * 企业号ID
-	 */
-	public static String sCorpID = "wx569905b8c1a2a573";// 这里是你企业号的CorpID
-	/**
-	 * 加密所用AES密钥
-	 */
-	public static String sEncodingAESKey = "rjhGuYgsW7hc2AGI6wQoc8umXEL9zbrd7B6bVCXDes5";// 这个EncodingAESKey是随机生成，但是必须跟企业号上的相同
 	/**
 	 * 校验方法
 	 * @param request
@@ -50,7 +39,7 @@ public class TokenVerify {
 		WXBizMsgCrypt wxcpt;
 		// 通过检验signature对请求进行校验，若校验成功则原样返回echostr，表示接入成功，否则接入失败
 		try {
-			wxcpt = new WXBizMsgCrypt(sToken, sEncodingAESKey, sCorpID);
+			wxcpt = new WXBizMsgCrypt(APPConstants.TOKEN, APPConstants.encodingAESKey, APPConstants.CORPID);
 			sEchoStr = wxcpt.VerifyURL(sVerifyMsgSig, sVerifyTimeStamp,
 					sVerifyNonce, sVerifyEchoStr);
 			// 验证URL成功，将sEchoStr返回

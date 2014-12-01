@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.yonyou.weixin.core.processor.YonyouDispatcher;
+import com.yonyou.weixin.core.dispatcher.YonyouDispatcher;
 import com.yonyou.weixin.core.tencent.AesException;
 import com.yonyou.weixin.core.tencent.WXBizMsgCrypt;
 import com.yonyou.weixin.core.verify.TokenVerify;
@@ -53,6 +53,7 @@ public class YonyouCoreController {
 		// 响应消息
 		PrintWriter out = response.getWriter();
 		try {
+			//使用AES加密响应信息
 			respMessage = WXBizMsgCrypt.getDefaultInstance().EncryptMsg(respMessage,
 					request.getParameter("timestamp"),
 					request.getParameter("nonce"));

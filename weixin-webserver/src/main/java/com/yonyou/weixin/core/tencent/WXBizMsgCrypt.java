@@ -23,7 +23,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
-import com.yonyou.weixin.core.verify.TokenVerify;
+import com.yonyou.weixin.core.oauth2.inteceptor.APPConstants;
 
 /**
  * 提供接收和推送给公众平台消息的加解密接口(UTF8编码的字符串).
@@ -79,8 +79,7 @@ public class WXBizMsgCrypt {
 	 * @throws AesException
 	 */
 	public static WXBizMsgCrypt getDefaultInstance() throws AesException {
-		return new WXBizMsgCrypt(TokenVerify.sToken,
-				TokenVerify.sEncodingAESKey, TokenVerify.sCorpID);
+		return new WXBizMsgCrypt(APPConstants.TOKEN, APPConstants.encodingAESKey, APPConstants.CORPID);
 	}
 
 	// 生成4个字节的网络字节序

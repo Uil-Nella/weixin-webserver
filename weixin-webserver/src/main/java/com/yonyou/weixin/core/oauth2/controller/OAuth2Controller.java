@@ -10,15 +10,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.yonyou.weixin.core.model.AccessToken;
-import com.yonyou.weixin.core.oauth2.inteceptor.Constants;
-import com.yonyou.weixin.core.oauth2.util.QiYeUtil;
-import com.yonyou.weixin.core.oauth2.util.Result;
+import com.yonyou.weixin.core.model.Result;
+import com.yonyou.weixin.core.oauth2.inteceptor.APPConstants;
+import com.yonyou.weixin.core.oauth2.util.WeixinUtil;
 /**
-* OAuth2 处理控制器
-* 	1.签到方式   地理定位  附近
-* @author Sunlight
-*
-*/
+ * OAuth2 处理控制器
+ * <p/>
+ * <p> @author 刘新宇
+ *
+ * <p> @date 2014年12月1日 下午6:30:24
+ * <p> @version 0.0.1
+ */
 @Controller
 public class OAuth2Controller {
         /**
@@ -30,11 +32,11 @@ public class OAuth2Controller {
         @RequestMapping(value = { "/oauth2.do", "/oauth2" })
         public String Oauth2API(HttpServletRequest request, @RequestParam String resultUrl) {
                 // 此处可以添加获取持久化的数据，如企业号id等相关信息
-                String CropId = Constants.CORPID;
+                String CropId = APPConstants.CORPID;
                 String redirectUrl = "";
                 if (resultUrl != null) {
                         String reqUrl =request.getLocalAddr();
-                        reqUrl =reqUrl+"/weixin-web";
+                        reqUrl =reqUrl+"/"+APPConstants.APP_NAME;
                         String backUrl ="http://" + reqUrl + "/oauth2url.do?oauth2url=" + resultUrl;
                         System.out.println("backUrl="+backUrl);
                         redirectUrl = oAuth2Url(CropId, backUrl);
@@ -54,10 +56,10 @@ public class OAuth2Controller {
          */
         @RequestMapping(value = { "/oauth2url.do" })
         public String Oauth2MeUrl(HttpServletRequest request, @RequestParam String code, @RequestParam String oauth2url) {
-                AccessToken accessToken = QiYeUtil.getAccessToken(Constants.CORPID, Constants.APPSECRET);
+                AccessToken accessToken = WeixinUtil.getAccessToken(APPConstants.CORPID, APPConstants.APPSECRET);
                 HttpSession session = request.getSession();
                 if (accessToken != null && accessToken.getToken() != null) {
-                        String Userid = getMemberGuidByCode(accessToken.getToken(), code, Constants.AGENTID);
+                        String Userid = getMemberGuidByCode(accessToken.getToken(), code, APPConstants.AGENTID);
                         if (Userid != null) {
                                 session.setAttribute("UserId", Userid);
                         }
@@ -79,7 +81,7 @@ public class OAuth2Controller {
          */
         private String oAuth2Url(String corpid, String redirect_uri) {
                 try {
-                        redirect_uri = java.net.URLEncoder.encode(redirect_uri, "utf-8");
+                        redirect_uri = java.net.URLEncoder.encode(redirect_uri, APPConstants.APP_ENCODING);
                 } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                 }
@@ -92,16 +94,16 @@ public class OAuth2Controller {
         /**
          * 调用接口获取用户信息
          * 
-         * @param token
-         * @param code
-         * @param agentId
+         * @param token 
+         * @param code 返回代码
+         * @param agentId  应用ID
          * @return
          * @throws SQLException
          * @throws RemoteException
          */
         public String getMemberGuidByCode(String token, String code, int agentId) {
                 System.out.println("code==" + code + "token=" + token + "agentid=" + agentId);
-                Result<String> result = QiYeUtil.oAuth2GetUserByCode(token, code, agentId);
+                Result<String> result = WeixinUtil.oAuth2GetUserByCode(token, code, agentId);
                 System.out.println("result=" + result);
                 if (result.getErrcode() == "0") {
                         if (result.getObj() != null) {

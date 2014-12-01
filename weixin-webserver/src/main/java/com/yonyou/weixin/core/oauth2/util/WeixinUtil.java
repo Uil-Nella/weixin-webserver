@@ -2,10 +2,10 @@ package com.yonyou.weixin.core.oauth2.util;
 
 
 
-import com.yonyou.weixin.core.model.AccessToken;
-
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import com.yonyou.weixin.core.model.AccessToken;
+import com.yonyou.weixin.core.model.Result;
 
 /**
  * 微信企业号调用类 {"errcode":0,"errmsg":"ok"} 此结果表示调用方法成功返回
@@ -13,7 +13,8 @@ import net.sf.json.JSONObject;
  * @author Sunlight
  * 
  */
-public class QiYeUtil {
+public class WeixinUtil {
+	private static AccessToken accessToken=null;
 	/**
 	 * 获取企业号AccessToken
 	 * 
@@ -22,8 +23,10 @@ public class QiYeUtil {
 	 * @return
 	 */
 	public static AccessToken getAccessToken(String CorpID, String CorpSecret) {
-		AccessToken accessToken = WechatAccessToken.getAccessToken(CorpID,
-				CorpSecret, 1);
+		if(null==accessToken){
+			accessToken = WechatAccessToken.getAccessToken(CorpID,
+					CorpSecret, 1);
+		}
 		return accessToken;
 	}
 
