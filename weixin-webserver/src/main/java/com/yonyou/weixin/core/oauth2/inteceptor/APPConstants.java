@@ -12,7 +12,7 @@ package com.yonyou.weixin.core.oauth2.inteceptor;
  *       <p>
  * @version 0.0.1
  */
-public class APPConstants {
+public interface APPConstants {
 	/**
 	 * 应用ID
 	 */
@@ -41,5 +41,9 @@ public class APPConstants {
 	 * 应用编码字符集
 	 */
 	public static final String APP_ENCODING = "utf-8";
+	/**
+	 * 当前登录的员工
+	 */
+	public static final String CURRENT_LOGIN_STAFF = "current_staff";
 
 }

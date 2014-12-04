@@ -68,22 +68,48 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		//传递字符串格式json对象到后台（一个json对象）  
-		$("#submit").click(function() {
+		$("#bind").click(function() {
 			var userid = encodeURI($("#userid").attr("value"));
-			var username = encodeURI($("#username").attr("value"));
+			var username = encodeURI(($("#username").attr("value")));
+			if(username.indexOf("(")>0){
+				username = username.substring(0,username.indexOf("("));
+			}
 			var password = encodeURI($("#password").attr("value"));
+			var way = "bind";
 
 			var user = {
 				"userid" : userid,
 				"username" : username,
-				"password" : password
+				"password" : password,
+				"way" : way
 			};
+			//重复绑定校验
 			var res_user = encodeURI(JSON.stringify(user));
+			$.ajax({
+				url : "http://121.42.24.106/weixin-web/checkId.do",
+				type : "POST",
+				data : "jsondata=" + res_user,
+				async: false,
+				dataType : "json",
+				success : function(data) {
+					var arr = eval(data);
+					if (arr.status == "failure") {
+						var r=confirm(arr.msg);
+						if (r==true){
+							user.way = "update"
+						}else{
+						  return false ;
+						}
+					}
 
+				}
+			});
+			//绑定
+			var res_user2 = encodeURI(JSON.stringify(user));
 			$.ajax({
 				url : "http://121.42.24.106/weixin-web/bindUser.do",
 				type : "POST",
-				data : "jsondata=" + res_user,
+				data : "jsondata=" + res_user2,
 				dataType : "json",
 				success : function(data) {
 					var arr = eval(data);
@@ -102,7 +128,9 @@
 				}
 			});
 		});
-
+		$("#username").click(function() {
+			$("#username").attr("value",'');//清空
+		});
 	});
 </script>
 </head>
@@ -112,19 +140,15 @@
 		<form action="" method="post">
 			<input type="text" name="userid" id="userid" class="username"
 				value="${UserId}" placeholder="微信ID" readonly="readonly"> <input
-				type="text" name="username" class="username" id="username"
-				placeholder="域账号"> <input type="password" name="password"
+				type="text" name="username" class="username" id="username" value ="${UserPdomain}(${UserName})"
+				placeholder="域账号(无需输入pdomain)"> <input type="password" name="password"
 				id="password" class="password" placeholder="密码">
-			<button type="button" id="submit">绑定</button>
+			<button type="button" id="bind">绑定</button>
 			<div class="error">
 				<span>+</span>
 			</div>
 		</form>
 		<div class="connect">
-			<p>关 联 账 号：</p>
-			<p>
-				<a class="facebook" href=""></a> <a class="twitter" href=""></a>
-			</p>
 		</div>
 	</div>
 </body>

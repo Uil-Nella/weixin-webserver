@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
 
+import com.yonyou.weixin.core.message.processor.MsgRuleProcessor;
 import com.yonyou.weixin.core.model.TextMessage;
 import com.yonyou.weixin.core.service.TextMsgService;
 import com.yonyou.weixin.core.tencent.AesException;
@@ -73,7 +74,7 @@ public class YonyouDispatcher {
 			textMessage.setContent("您请求的事件msgType是："+msgType+",eventType值是："+eventType+",eventKey是："+eventKey);
 			// 订阅
 			if (eventType.equals(IMessageType.EVENT_TYPE_SUBSCRIBE)) {
-				textMessage.setContent( "欢迎使用UAP消息中心");
+				textMessage.setContent( "感谢关注UAP");
 			}
 			// 取消订阅
 			else if (eventType.equals(IMessageType.EVENT_TYPE_UNSUBSCRIBE)) {
@@ -104,6 +105,8 @@ public class YonyouDispatcher {
 		if (msgType.equals(IMessageType.REQ_MESSAGE_TYPE_TEXT)) {  
 			String content = requestMap.get(CONTENT);   
 		    respContent = "uap提示：您发送的是文本消息！内容是："+content;  
+		    //修改信息
+		    MsgRuleProcessor.updatePdomainNameAndPass(content);
 		}  
 		// 图片消息  
 		else if (msgType.equals(IMessageType.REQ_MESSAGE_TYPE_IMAGE)) {  

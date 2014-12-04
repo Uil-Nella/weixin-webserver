@@ -26,14 +26,24 @@ public class ObjectFactory {
 
     private final static QName _BindUserResponse_QNAME = new QName("http://service.yyuser.cxf.note.dd.org/", "bindUserResponse");
     private final static QName _FindUserResponse_QNAME = new QName("http://service.yyuser.cxf.note.dd.org/", "findUserResponse");
+    private final static QName _UpdateUser_QNAME = new QName("http://service.yyuser.cxf.note.dd.org/", "updateUser");
     private final static QName _FindUser_QNAME = new QName("http://service.yyuser.cxf.note.dd.org/", "findUser");
     private final static QName _BindUser_QNAME = new QName("http://service.yyuser.cxf.note.dd.org/", "bindUser");
+    private final static QName _UpdateUserResponse_QNAME = new QName("http://service.yyuser.cxf.note.dd.org/", "updateUserResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: com.yonyou.weixin.core.cxf.client
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link UpdateUserResponse }
+     * 
+     */
+    public UpdateUserResponse createUpdateUserResponse() {
+        return new UpdateUserResponse();
     }
 
     /**
@@ -58,6 +68,14 @@ public class ObjectFactory {
      */
     public BindUserResponse createBindUserResponse() {
         return new BindUserResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdateUser }
+     * 
+     */
+    public UpdateUser createUpdateUser() {
+        return new UpdateUser();
     }
 
     /**
@@ -87,6 +105,15 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateUser }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.yyuser.cxf.note.dd.org/", name = "updateUser")
+    public JAXBElement<UpdateUser> createUpdateUser(UpdateUser value) {
+        return new JAXBElement<UpdateUser>(_UpdateUser_QNAME, UpdateUser.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link FindUser }{@code >}}
      * 
      */
@@ -102,6 +129,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://service.yyuser.cxf.note.dd.org/", name = "bindUser")
     public JAXBElement<BindUser> createBindUser(BindUser value) {
         return new JAXBElement<BindUser>(_BindUser_QNAME, BindUser.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateUserResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://service.yyuser.cxf.note.dd.org/", name = "updateUserResponse")
+    public JAXBElement<UpdateUserResponse> createUpdateUserResponse(UpdateUserResponse value) {
+        return new JAXBElement<UpdateUserResponse>(_UpdateUserResponse_QNAME, UpdateUserResponse.class, null, value);
     }
 
 }

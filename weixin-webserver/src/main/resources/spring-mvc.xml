@@ -25,6 +25,7 @@
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/jsp/"></property>
 		<property name="suffix" value=".jsp"></property>
+		
 	</bean>
 
 	<!-- OAuth2拦截器 -->
@@ -33,7 +34,9 @@
 			<!-- 对所有的请求拦截使用/** ,对某个模块下的请求拦截使用：/myPath/* -->
 			<mvc:mapping path="/**" />
 			<ref bean="oauth2Interceptor" />
+			
 		</mvc:interceptor>
+		
 	</mvc:interceptors>
 	<bean id="oauth2Interceptor" class="com.yonyou.weixin.core.oauth2.inteceptor.OAuth2Interceptor">
 	</bean>

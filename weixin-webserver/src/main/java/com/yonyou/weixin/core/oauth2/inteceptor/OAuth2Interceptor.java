@@ -66,7 +66,7 @@ public class OAuth2Interceptor implements HandlerInterceptor {
 			OAuthRequired annotation = method.getAnnotation(OAuthRequired.class);
 			if (annotation != null) {
 				System.out.println("OAuthRequired：你的访问需要获取登录信息！");
-				Object objUid = session.getAttribute("UserId");
+				Object objUid = session.getAttribute(APPConstants.CURRENT_LOGIN_STAFF);
 				if (objUid == null) {
 					String resultUrl = request.getRequestURL().toString();
 					String param = request.getQueryString();

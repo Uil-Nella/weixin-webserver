@@ -5,14 +5,21 @@ import java.io.UnsupportedEncodingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONObject;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.yonyou.weixin.core.context.LoginContext;
+import com.yonyou.weixin.core.cxf.client.ServiceFactory;
+import com.yonyou.weixin.core.cxf.client.YYUserWS;
 import com.yonyou.weixin.core.model.AccessToken;
 import com.yonyou.weixin.core.model.Result;
 import com.yonyou.weixin.core.oauth2.inteceptor.APPConstants;
 import com.yonyou.weixin.core.oauth2.util.WeixinUtil;
+import com.yonyou.weixin.core.user.model.Staff;
+import com.yonyou.weixin.core.user.util.StaffUtil;
 /**
  * OAuth2 处理控制器
  * <p/>
@@ -61,10 +68,27 @@ public class OAuth2Controller {
                 if (accessToken != null && accessToken.getToken() != null) {
                         String Userid = getMemberGuidByCode(accessToken.getToken(), code, APPConstants.AGENTID);
                         if (Userid != null) {
-                                session.setAttribute("UserId", Userid);
+                        	Staff staff = StaffUtil.getStaffByUserId(Userid, accessToken.getToken());
+                        	//尝试拉取员工的与账号信息 （可能没有绑定）
+                        	try {
+								YYUserWS service =  ServiceFactory.getServiceInstance();
+								Object obj =service.findUser(staff.getUserid());
+								if(obj!=null){
+									JSONObject json = JSONObject.fromObject(obj);
+									//信息有效
+									if(json.get("username")!=null&&json.get("password")!=null){
+										staff.setPdomaincode(json.get("username").toString());
+										staff.setPassword(json.get("password").toString());
+									}
+								}
+							} catch (Exception e) {
+								//还没有绑定
+							}
+                    		// 这里简单处理,存储到session中
+                            session.setAttribute(APPConstants.CURRENT_LOGIN_STAFF, staff);
+                            LoginContext.setLoginStaff(staff);
                         }
                 }
-                // 这里简单处理,存储到session中
                 return "redirect:" + oauth2url;
         }
 

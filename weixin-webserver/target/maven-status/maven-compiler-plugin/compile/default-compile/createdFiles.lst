@@ -1,3 +1,6 @@
+com\yonyou\weixin\core\context\LoginContext.class
+com\yonyou\weixin\core\user\model\Staff.class
+com\yonyou\weixin\core\mp\util\HexUtil.class
 com\yonyou\weixin\core\util\IMessageType.class
 com\yonyou\weixin\core\oauth2\util\RequestUtil.class
 com\yonyou\weixin\core\cxf\client\YYUserWSService.class
@@ -24,6 +27,7 @@ com\yonyou\weixin\core\oauth2\util\MyX509TrustManager.class
 com\yonyou\weixin\core\tencent\SHA1.class
 com\yonyou\weixin\core\util\MessageUtil.class
 com\yonyou\weixin\core\controller\YonyouCoreController.class
+com\yonyou\weixin\core\cxf\client\UpdateUser.class
 com\yonyou\weixin\core\service\IService.class
 com\yonyou\weixin\core\message\model\SendMessage.class
 com\yonyou\weixin\core\cxf\client\FindUser.class
@@ -31,10 +35,15 @@ com\yonyou\weixin\core\model\Result.class
 com\yonyou\weixin\core\model\Article.class
 com\yonyou\weixin\core\model\NewsMessage.class
 com\yonyou\weixin\core\oauth2\util\WechatOAuth2.class
+com\yonyou\weixin\core\mp\util\MPUtils.class
 com\yonyou\weixin\core\verify\TokenVerify.class
 com\yonyou\weixin\core\util\MessageUtil$1.class
+com\yonyou\weixin\core\cxf\client\UpdateUserResponse.class
+com\yonyou\weixin\core\message\processor\MsgRuleProcessor.class
 com\yonyou\weixin\core\util\MessageUtil$1$1.class
+com\yonyou\weixin\core\mp\controller\MPLoginController.class
 com\yonyou\weixin\core\oauth2\controller\UserController.class
+com\yonyou\weixin\core\user\util\StaffUtil.class
 com\yonyou\weixin\core\tencent\XMLParse.class
 com\yonyou\weixin\core\tencent\PKCS7Encoder.class
 com\yonyou\weixin\core\cxf\client\ObjectFactory.class

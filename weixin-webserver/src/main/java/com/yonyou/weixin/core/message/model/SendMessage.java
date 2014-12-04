@@ -1,5 +1,7 @@
 package com.yonyou.weixin.core.message.model;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.yonyou.weixin.core.oauth2.inteceptor.APPConstants;
 import com.yonyou.weixin.core.oauth2.util.RequestUtil;
 import com.yonyou.weixin.core.oauth2.util.WeixinUtil;
@@ -42,6 +44,19 @@ public class SendMessage {
 		String PostData = "{\"touser\": \"%s\",\"toparty\":\"%s\",\"totag\": \"%s\",\"msgtype\": \"text\",\"agentid\": \"%s\",\"text\": {\"content\": \"%s\"},\"safe\":\"0\"}";
 		return String
 				.format(PostData, touser, toparty, totag, agentid, content);
+	}
+	/**
+	 * 直接给用户id发送消息 不含 部门和 标签
+	 * @param touser 用户id
+	 * @param agentid 应用id
+	 * @param content 消息内容
+	 * @return
+	 */
+	public static String STextMsgWithoutPartyAndTag(String touser,
+			String agentid, String content) {
+		String PostData = "{\"touser\": \"%s\",\"toparty\":\"%s\",\"totag\": \"%s\",\"msgtype\": \"text\",\"agentid\": \"%s\",\"text\": {\"content\": \"%s\"},\"safe\":\"0\"}";
+		return String
+				.format(PostData, touser, StringUtils.EMPTY, StringUtils.EMPTY, agentid, content);
 	}
 
 	/**
@@ -210,7 +225,11 @@ public class SendMessage {
 		return String.format(postData, touser, toparty, totag, agentid,
 				articlesList);
 	}
-
+	public static void postMsg(String postData){
+		RequestUtil.PostMessage(WeixinUtil.getAccessToken(APPConstants.CORPID,
+				APPConstants.APPSECRET).getToken(), "POST", POST_URL,
+				postData);
+	}
 	// 示例
 	public static void main(String[] args) {
 		// 调取凭证
