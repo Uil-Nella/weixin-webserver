@@ -8,6 +8,8 @@
 
 package com.yonyou.weixin.core.tencent;
 
+import org.apache.log4j.Logger;
+
 import java.io.StringReader;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -24,6 +26,10 @@ import org.xml.sax.InputSource;
  * 提供提取消息格式中的密文及生成回复消息格式的接口.
  */
 class XMLParse {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(XMLParse.class);
 
 	/**
 	 * 提取出xml数据包中的加密消息
@@ -50,7 +56,8 @@ class XMLParse {
 			result[2] = nodelist2.item(0).getTextContent();
 			return result;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("extract(String)", e);
+
 			throw new AesException(AesException.ParseXmlError);
 		}
 	}

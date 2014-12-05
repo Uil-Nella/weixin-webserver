@@ -1,5 +1,7 @@
 package com.yonyou.weixin.core.oauth2.util;
 
+import org.apache.log4j.Logger;
+
 
 
 import net.sf.json.JSONObject;
@@ -14,6 +16,11 @@ import com.yonyou.weixin.core.model.Result;
  * 
  */
 public class WeixinUtil {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(WeixinUtil.class);
+
 	private static AccessToken accessToken=null;
 	/**
 	 * 获取企业号AccessToken
@@ -55,6 +62,8 @@ public class WeixinUtil {
 				}
 
 			} catch (Exception e) {
+				logger.error("oAuth2GetUserByCode(String, String, int)", e);
+
 				result.setErrmsg("accessToken 超时......");
 				result.setErrcode("42001");
 			}

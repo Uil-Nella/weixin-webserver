@@ -1,5 +1,7 @@
 package com.yonyou.weixin.core.verify;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -18,6 +20,11 @@ import com.yonyou.weixin.core.tencent.WXBizMsgCrypt;
  * <p> @version 0.0.1
  */
 public class TokenVerify {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(TokenVerify.class);
+
 	/**
 	 * 校验方法
 	 * @param request
@@ -45,7 +52,7 @@ public class TokenVerify {
 			// 验证URL成功，将sEchoStr返回
 			out.print(sEchoStr);
 		} catch (AesException e1) {
-			e1.printStackTrace();
+			logger.error("verify(HttpServletRequest, HttpServletResponse)", e1);
 		}
 	}
 }

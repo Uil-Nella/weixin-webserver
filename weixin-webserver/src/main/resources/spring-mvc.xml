@@ -40,5 +40,5 @@
 	</mvc:interceptors>
 	<bean id="oauth2Interceptor" class="com.yonyou.weixin.core.oauth2.inteceptor.OAuth2Interceptor">
 	</bean>
-
+	<import resource="spring-quartz.xml"/>
 </beans>

@@ -11,11 +11,18 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import net.sf.json.JSONObject;
+
+import org.apache.log4j.Logger;
+
 import com.yonyou.weixin.core.model.AccessToken;
 import com.yonyou.weixin.core.oauth2.inteceptor.APPConstants;
-
-import net.sf.json.JSONObject;
 public class RequestUtil {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(RequestUtil.class);
+
     /** 
      * 发起https请求并获取结果 
      *  
@@ -134,9 +141,15 @@ public class RequestUtil {
  	        if (0 != jsonobject.getInt("errcode")) {  
  	            result = jsonobject.getInt("errcode");  
  	            String error = "errcode:{"+jsonobject.getInt("errcode")+"} errmsg:{"+jsonobject.getString("errmsg")+"}";  
- 	            System.out.println(error); 
+				if (logger.isInfoEnabled()) {
+					logger.info("PostMessage(String, String, String, String)"+error);
+				}
  	        }  
  	    }
+      
+		if (logger.isDebugEnabled()) {
+			logger.debug("PostMessage(String, String, String, String) - 返回数据"+RequestURL+outstr);
+		}
     	return result;
     }
 }  

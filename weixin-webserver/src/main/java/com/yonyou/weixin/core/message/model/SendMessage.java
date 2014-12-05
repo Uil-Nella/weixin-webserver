@@ -225,11 +225,24 @@ public class SendMessage {
 		return String.format(postData, touser, toparty, totag, agentid,
 				articlesList);
 	}
+	/**
+	 * 通过http发送消息
+	 * @param postData 处理好的格式消息
+	 */
 	public static void postMsg(String postData){
 		RequestUtil.PostMessage(WeixinUtil.getAccessToken(APPConstants.CORPID,
 				APPConstants.APPSECRET).getToken(), "POST", POST_URL,
 				postData);
 	}
+	/**
+	 * 发送文本消息
+	 * @param userid  接收方userid
+	 * @param textMsg 文本内容
+	 */
+	public static void postTextMsg(String userid,String textMsg){
+		postMsg(SendMessage.STextMsgWithoutPartyAndTag(userid, String.valueOf(APPConstants.AGENTID), textMsg));
+	}
+	
 	// 示例
 	public static void main(String[] args) {
 		// 调取凭证

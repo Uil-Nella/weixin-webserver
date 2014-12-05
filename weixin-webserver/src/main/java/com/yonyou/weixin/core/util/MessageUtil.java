@@ -74,6 +74,7 @@ public class MessageUtil {
 	 * @return
 	 * @throws Exception
 	 */
+	@SuppressWarnings("unchecked")
 	public static Map<String, String> parseXml(String msg) throws Exception {
 		// 将解析结果存储在HashMap中
 		Map<String, String> map = new HashMap<String, String>();
@@ -147,8 +148,7 @@ public class MessageUtil {
 				// 对所有xml节点的转换都增加CDATA标记
 				boolean cdata = true;
 
-				@SuppressWarnings("unchecked")
-				public void startNode(String name, Class clazz) {
+				public void startNode(String name, @SuppressWarnings("rawtypes") Class clazz) {
 					super.startNode(name, clazz);
 				}
 

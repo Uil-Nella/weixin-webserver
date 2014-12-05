@@ -1,5 +1,7 @@
 package com.yonyou.weixin.core.dispatcher;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
@@ -25,6 +27,12 @@ import com.yonyou.weixin.core.util.MessageUtil;
  * <p> @version 0.0.1
  */
 public class YonyouDispatcher {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger
+			.getLogger(YonyouDispatcher.class);
+
 	public static final String MSGTYPE = "MsgType";
 	public static final String MSG_FAILURE = "响应失败";
 	public static final String EVENT = "Event";
@@ -37,6 +45,10 @@ public class YonyouDispatcher {
 	public static final String NONCE = "nonce";
 
 	public static String process(HttpServletRequest request) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("process(HttpServletRequest) - 处理微信端请求");
+		}
+
 		Map<String, String> requestMap = null;
 		String resp = MSG_FAILURE;
 		try {
@@ -53,7 +65,7 @@ public class YonyouDispatcher {
 			analysisEvent(requestMap, msgType, textMessage);
 			resp = MessageUtil.textMessageToXml(textMessage);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("process(HttpServletRequest) - 相应出错", e);
 		}
 		return resp;
 	}
@@ -65,6 +77,9 @@ public class YonyouDispatcher {
 	 */
 	private static void analysisEvent(Map<String, String> requestMap,
 			String msgType, TextMessage textMessage) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("analysisEvent(Map<String,String>, String, TextMessage) - 处理事件");
+		}
 		// 事件推送
 		if (msgType.equals(IMessageType.REQ_MESSAGE_TYPE_EVENT)) {
 			// 事件类型
@@ -101,6 +116,9 @@ public class YonyouDispatcher {
 	 */
 	private static void analysisMsg(Map<String, String> requestMap,
 			String msgType, TextMessage textMessage, String respContent) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("analysisMsg(Map<String,String>, String, TextMessage, String) - 处理消息");
+		}
 		// 文本消息  
 		if (msgType.equals(IMessageType.REQ_MESSAGE_TYPE_TEXT)) {  
 			String content = requestMap.get(CONTENT);   

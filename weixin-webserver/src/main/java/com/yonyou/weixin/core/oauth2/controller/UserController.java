@@ -1,5 +1,7 @@
 package com.yonyou.weixin.core.oauth2.controller;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.net.URLDecoder;
 
@@ -25,12 +27,19 @@ import com.yonyou.weixin.core.user.util.StaffUtil;
 
 /**
  * 需要验证OAuth2控制器
- * 
- * @author Sunlight
+ * <p/>
+ * <p> @author 刘新宇
  *
+ * <p> @date 2014年12月5日 上午9:52:04
+ * <p> @version 0.0.1
  */
 @Controller
 public class UserController {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(UserController.class);
+
 	/**
 	 * 请求中获取微信端id标识 key
 	 */
@@ -101,6 +110,7 @@ public class UserController {
 	@RequestMapping("/bindUser.do")
 	public void bindUser(HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
+		
 		// 解码
 		String str = URLDecoder.decode(request.getParameter(JSONDATA),
 				APPConstants.APP_ENCODING);
@@ -111,6 +121,11 @@ public class UserController {
 		String password = (String) jb.fromObject(str).get("password");
 		String way = (String) jb.fromObject(str).get("way");
 		JSONObject jsonObject = new JSONObject();
+
+		if (logger.isInfoEnabled()) {
+			logger.info("bindUser(HttpServletRequest, HttpServletResponse)+"+userid+"请求绑定");
+		}
+
 		try {
 			//正常绑定
 			if("bind".equalsIgnoreCase(way)){
@@ -123,7 +138,7 @@ public class UserController {
 				jsonObject.put("status", "success");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("bindUser(HttpServletRequest, HttpServletResponse)", e);
 		}
 			// 返回给微信客户端提示
 		response.getWriter().print(jsonObject.toString());
@@ -140,11 +155,14 @@ public class UserController {
 		
 		//重新reload信息
 		StaffUtil.reLoad(request, username, password);
-		// 打印结果
 		if (0 == result) {
-			System.out.println("操作成功");
+			if (logger.isDebugEnabled()) {
+				logger.debug("bindUser(HttpServletRequest, HttpServletResponse) - 操作成功");
+			}
 		} else {
-			System.out.println("操作失败");
+			if (logger.isDebugEnabled()) {
+				logger.debug("bindUser(HttpServletRequest, HttpServletResponse) - 操作失败");
+			}
 		}
 	}
 }

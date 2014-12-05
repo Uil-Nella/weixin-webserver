@@ -1,5 +1,7 @@
 package com.yonyou.weixin.core.oauth2.util;
 
+import org.apache.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -29,6 +31,11 @@ import com.yonyou.weixin.core.oauth2.inteceptor.APPConstants;
  * <p> @version 0.0.1
  */
 public class HttpRequestUtil {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger
+			.getLogger(HttpRequestUtil.class);
 	
 	/**
 	 * 发起https请求并获取结果
@@ -90,13 +97,14 @@ public class HttpRequestUtil {
 			httpUrlConn.disconnect();
 			jsonObject = JSONObject.fromObject(buffer.toString());
 		} catch (ConnectException ce) {
-			ce.printStackTrace();
-			System.out.println("网络链接失败！");
+			logger.error("httpRequest(String, String, String) - 网络链接失败！", ce);
 		}catch (UnknownHostException uhe) {
 			uhe.printStackTrace();
-			System.out.println("微信API无法访问....！");
+			logger.error(
+					"httpRequest(String, String, String) - 微信API无法访问....！", uhe);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(
+					"httpRequest(String, String, String) - ", e);
 		}
 		return jsonObject;
 	}
@@ -159,7 +167,9 @@ public class HttpRequestUtil {
 			inputStream = null;
 			httpUrlConn.disconnect();
 		} catch (ConnectException ce) {
+			logger.error("httpRequest_byte(String, String, byte[])", ce);
 		} catch (Exception e) {
+			logger.error("httpRequest_byte(String, String, byte[])", e);
 		}
 		return out.toByteArray();
 	}

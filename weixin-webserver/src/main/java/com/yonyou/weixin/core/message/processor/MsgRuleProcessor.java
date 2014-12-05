@@ -6,7 +6,6 @@ import com.yonyou.weixin.core.context.LoginContext;
 import com.yonyou.weixin.core.cxf.client.ServiceFactory;
 import com.yonyou.weixin.core.cxf.client.YYUserWS;
 import com.yonyou.weixin.core.message.model.SendMessage;
-import com.yonyou.weixin.core.oauth2.inteceptor.APPConstants;
 /**
  * 消息处理类
  * <p/>
@@ -23,7 +22,7 @@ public class MsgRuleProcessor {
 	 */
 	public static void updatePdomainNameAndPass(String resMsg){
 		if(!isMatchRule(resMsg)||!isMatchUpdateRule(resMsg)) {
-			SendMessage.postMsg(SendMessage.STextMsgWithoutPartyAndTag(LoginContext.staff.getUserid(), String.valueOf(APPConstants.AGENTID), "输入无效"));
+			SendMessage.postTextMsg(LoginContext.staff.getUserid(), "输入无效");
 			return ;
 		}
 		StringUtils.remove(resMsg, "$");
@@ -38,7 +37,7 @@ public class MsgRuleProcessor {
 		//FIXME 校验旧密码的正确性
 		YYUserWS service =  ServiceFactory.getServiceInstance();
 		service.updateUser(LoginContext.staff.getUserid(), username, newpass);
-		SendMessage.postMsg(SendMessage.STextMsgWithoutPartyAndTag(LoginContext.staff.getUserid(), String.valueOf(APPConstants.AGENTID), "修改成功"));
+		SendMessage.postTextMsg(LoginContext.staff.getUserid(), "修改成功");
 	}
 	public static boolean isMatchRule(String resMsg){
 		return resMsg==null?false:resMsg.startsWith(START_COMMOND);

@@ -1,5 +1,7 @@
 package com.yonyou.weixin.core.oauth2.util;
 
+import org.apache.log4j.Logger;
+
 
 
 import net.sf.json.JSONException;
@@ -13,6 +15,12 @@ import com.yonyou.weixin.core.oauth2.enums.EnumMethod;
  * 
  */
 public class WechatAccessToken {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger
+			.getLogger(WechatAccessToken.class);
+
 	// 获取微信公众号：access_token的接口地址（GET） 限2000（次/天）
 	public final static String access_token_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	// 获取企业号access_token
@@ -32,7 +40,9 @@ public class WechatAccessToken {
 		String requestUrl = access_token_url.replace("APPID", appid).replace("APPSECRET", appsecret);
 		if (type == 1) {
 			requestUrl = company_access_token_url.replace("CORPID", appid).replace("CORPSECRET", appsecret);
-			System.err.println(requestUrl);
+			if (logger.isInfoEnabled()) {
+				logger.info("getAccessToken(String, String, int)"+requestUrl);
+			}
 		}
 		JSONObject jsonObject = HttpRequestUtil.httpRequest(requestUrl, EnumMethod.GET.name(), null);
 		if(jsonObject==null){
@@ -47,6 +57,8 @@ public class WechatAccessToken {
 			} catch (JSONException e) {
 				accessToken = null;
 				// 获取token失败
+
+				logger.error("getAccessToken(String, String, int)", e);
 			}
 		}
 		return accessToken;

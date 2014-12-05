@@ -13,6 +13,8 @@
  */
 package com.yonyou.weixin.core.tencent;
 
+import org.apache.log4j.Logger;
+
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Random;
@@ -42,6 +44,11 @@ import com.yonyou.weixin.core.oauth2.inteceptor.APPConstants;
  * </ol>
  */
 public class WXBizMsgCrypt {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger.getLogger(WXBizMsgCrypt.class);
+
 	static Charset CHARSET = Charset.forName("utf-8");
 	Base64 base64 = new Base64();
 	byte[] aesKey;
@@ -158,7 +165,7 @@ public class WXBizMsgCrypt {
 
 			return base64Encrypted;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("encrypt(String, String)", e);
 			throw new AesException(AesException.EncryptAESError);
 		}
 	}
@@ -188,7 +195,7 @@ public class WXBizMsgCrypt {
 			// 解密
 			original = cipher.doFinal(encrypted);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("encrypt(String, String)", e);
 			throw new AesException(AesException.DecryptAESError);
 		}
 
@@ -207,7 +214,7 @@ public class WXBizMsgCrypt {
 			from_corpid = new String(Arrays.copyOfRange(bytes, 20 + xmlLength,
 					bytes.length), CHARSET);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("encrypt(String, String)", e);
 			throw new AesException(AesException.IllegalBuffer);
 		}
 

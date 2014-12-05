@@ -1,5 +1,7 @@
 package com.yonyou.weixin.core.oauth2.inteceptor;
 
+import org.apache.log4j.Logger;
+
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 
@@ -12,15 +14,24 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.yonyou.weixin.core.oauth2.annotation.OAuthRequired;
+
 /**
  * 认证拦截器
  * <p/>
- * <p> @author 刘新宇
+ * <p>
+ * @author 刘新宇
  *
- * <p> @date 2014年11月28日 下午3:37:58
- * <p> @version 0.0.1
+ * <p>
+ * @date 2014年11月28日 下午3:37:58
+ * <p>
+ * @version 0.0.1
  */
 public class OAuth2Interceptor implements HandlerInterceptor {
+	/**
+	 * Logger for this class
+	 */
+	private static final Logger logger = Logger
+			.getLogger(OAuth2Interceptor.class);
 
 	/**
 	 * 在DispatcherServlet完全处理完请求后被调用
@@ -30,8 +41,9 @@ public class OAuth2Interceptor implements HandlerInterceptor {
 	public void afterCompletion(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		System.out.println("**执行顺序: 3、afterCompletion**");
-
+		if (logger.isDebugEnabled()) {
+			logger.debug("afterCompletion(HttpServletRequest, HttpServletResponse, Object, Exception)");
+		}
 	}
 
 	/**
@@ -41,8 +53,9 @@ public class OAuth2Interceptor implements HandlerInterceptor {
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object arg2, ModelAndView modelAndView)
 			throws Exception {
-		System.out.println("**执行顺序: 2、postHandle**");
-
+		if (logger.isDebugEnabled()) {
+			logger.debug("postHandle(HttpServletRequest, HttpServletResponse, Object, ModelAndView)");
+		}
 	}
 
 	/**
@@ -53,20 +66,24 @@ public class OAuth2Interceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
-		System.out.println("**执行顺序: 1、preHandle**");
-//		String url = request.getRequestURL().toString();
-
+		if (logger.isDebugEnabled()) {
+			logger.debug("preHandle(HttpServletRequest, HttpServletResponse, Object) - 拦截preHandle");
+		}
 		HttpSession session = request.getSession();
 		// 先判断是否有注解
-		//路径拦截问题
-		if(handler instanceof HandlerMethod){
-			
+		// 路径拦截问题
+		if (handler instanceof HandlerMethod) {
+
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			Method method = handlerMethod.getMethod();
-			OAuthRequired annotation = method.getAnnotation(OAuthRequired.class);
+			OAuthRequired annotation = method
+					.getAnnotation(OAuthRequired.class);
 			if (annotation != null) {
-				System.out.println("OAuthRequired：你的访问需要获取登录信息！");
-				Object objUid = session.getAttribute(APPConstants.CURRENT_LOGIN_STAFF);
+				if (logger.isInfoEnabled()) {
+					logger.info("preHandle(HttpServletRequest, HttpServletResponse, Object) - OAuthRequired：你的访问需要获取登录信息！");
+				}
+				Object objUid = session
+						.getAttribute(APPConstants.CURRENT_LOGIN_STAFF);
 				if (objUid == null) {
 					String resultUrl = request.getRequestURL().toString();
 					String param = request.getQueryString();
@@ -75,9 +92,12 @@ public class OAuth2Interceptor implements HandlerInterceptor {
 					}
 					System.out.println("resultUrl=" + resultUrl);
 					try {
-						resultUrl = java.net.URLEncoder.encode(resultUrl, "utf-8");
+						resultUrl = java.net.URLEncoder.encode(resultUrl,
+								"utf-8");
 					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
+						logger.error(
+								"preHandle(HttpServletRequest, HttpServletResponse, Object)",
+								e);
 					}
 					// 请求的路径
 					String contextPath = request.getContextPath();
@@ -85,7 +105,7 @@ public class OAuth2Interceptor implements HandlerInterceptor {
 							+ resultUrl);
 					return false;
 				}
-				
+
 			}
 		}
 		return true;
