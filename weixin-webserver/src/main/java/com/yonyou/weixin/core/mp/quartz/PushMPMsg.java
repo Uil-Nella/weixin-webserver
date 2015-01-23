@@ -30,22 +30,30 @@ public class PushMPMsg {
 		//每半小时
 //		Date oneweek=new Date(new Date().getTime() -60*60*24*1*1000/48);
 		//每分钟
-		Date oneweek=new Date(new Date().getTime() -60*60*24*1*1000/24);
+		Date oneweek=new Date(new Date().getTime() -60*60*24*1*1000/24/12);
         String timeStamp = String.valueOf(oneweek.getTime());
         String systemcode = "WB";
         String type = "TASK";
+
+		if (logger.isInfoEnabled()) {
+			logger.info("run()----------------------------------------定时消息--------------------------------------");
+		}
+
         System.out.println("----------------------------------------定时消息--------------------------------------");
-        try {
-            messageVOs = MPServiceFactory.getServiceInstance().getMessageVOsByUserAndSystemAndType(timeStamp, systemcode, type);
-            String msg = "";
-            for(MpMessageUrlVO m :messageVOs){
-            	msg = m.getSendername()+"提交单据，请"+m.getReceivername()+"审批："+m.getUrl();
-            	msg +=msg;
-            }
-            SendMessage.postTextMsg("0000049835",  "有人提交单据请审批:"+"【"+msg+"】");
-            msg = "";
-        } catch (Exception_Exception e) { 
-			logger.error("run()", e);
-        }
+//        try {
+//            messageVOs = MPServiceFactory.getServiceInstance().getMessageVOsByUserAndSystemAndType(timeStamp, systemcode, type);
+//            int i =0;
+//            for(MpMessageUrlVO m :messageVOs){
+//            	i++;
+//            	SendMessage.postTextMsg(m.getReceiver(), "\"<a href=\""+m.getUrl()+"\">"+m.getSendername()+"提交单据请您审批,猛戳这里"+"</a>\"");
+//            	SendMessage.postTextMsg("0000049835","<a href="+m.getUrl()+">"+  m.getSendername()+"提交单据请"+m.getReceiver()+"审批,猛戳这里</a>");
+//            }
+//            SendMessage.postTextMsg("0000049835",  "<a>共拉取"+i+"条单据</a>");
+//        } catch (Exception_Exception e) { 
+//			logger.error("run()", e);
+//        }
+        SendMessage.postTextMsg("0000049835",  "<a href='http://bugkillers.org'>尝试拉取单据共拉取条单据</a>");
+        
+        
 	}
 }

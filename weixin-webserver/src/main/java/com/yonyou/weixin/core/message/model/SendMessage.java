@@ -258,5 +258,9 @@ public class SendMessage {
 		} else {
 			System.out.println("操作失败");
 		}
+		
+		String str = SendMessage.STextMsgWithoutPartyAndTag("22", String.valueOf(APPConstants.AGENTID), "<a href=www.b.org>"+ "l提交单据请555审批,猛戳这里"+"</a>");
+		System.out.println(str);
+				
 	}
 }
